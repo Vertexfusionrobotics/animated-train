@@ -603,9 +603,10 @@ blockquote::after {
 .holo-item img,
 .holo-item video {
     width: 100%;
-    height: 250px;
-    object-fit: cover;
+    height: 400px;
+    object-fit: contain;
     display: block;
+    background: #000;
 }
 
 .holo-item video {
@@ -842,6 +843,15 @@ footer p {
     .gallery-item.large {
         grid-column: span 2;
     }
+    
+    .holo-pad-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    
+    .holo-item img,
+    .holo-item video {
+        height: 350px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -904,6 +914,16 @@ footer p {
     .about-grid {
         grid-template-columns: 1fr;
     }
+    
+    .holo-pad-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .holo-item img,
+    .holo-item video {
+        height: 300px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -929,5 +949,15 @@ footer p {
         padding: 1rem 1.5rem;
         font-size: 1rem;
         flex-direction: column;
+    }
+    
+    .holo-pad-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .holo-item img,
+    .holo-item video {
+        height: 250px;
     }
 }
