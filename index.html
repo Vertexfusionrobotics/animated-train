@@ -14,6 +14,10 @@
     <audio id="ariAudio" preload="auto">
         <source src="ari_website_intro.mp3" type="audio/mpeg">
     </audio>
+    <!-- Holo Pad Voice Overview -->
+    <audio id="holoAudio" preload="none">
+        <source src="holo_pad_overview.mp3" type="audio/mpeg">
+    </audio>
 
     <header>
         <div class="header-content">
@@ -124,7 +128,7 @@
             </div>
         </section>
 
-        <!-- Coming Soon Section: Holo Pad -->
+         <!-- Coming Soon Section: Holo Pad -->
         <section id="coming-soon" class="coming-soon-section">
             <div class="section-content">
                 <div class="coming-soon-badge">🚀 Coming Soon</div>
@@ -132,6 +136,12 @@
                 <div class="holo-pad-introduction">
                     <h3>Redefining the Educational Interface</h3>
                     <p>The Holo Pad<span class="trademark">™</span> is a holographic education device designed to bring science and biology to life. By moving beyond the limitations of 2D screens, we are developing a way for students to interact with 3D visualizations in real time. Whether it is exploring the structure of a DNA strand or the scale of our solar system, the Holo Pad<span class="trademark">™</span> is being built to bridge the gap between digital data and physical understanding.</p>
+                </div>
+                <div class="holo-voice" style="text-align:center; margin: 10px 0 30px;">
+                    <button id="playHoloBtn" class="cta-button">
+                        <span class="play-icon">▶</span> Hear About the Holo Pad<span class="trademark">™</span>
+                    </button>
+                    <p class="audio-hint" id="holoHint">Click to hear Ari describe the Holo Pad</p>
                 </div>
                 <div class="holo-pad-grid">
                     <div class="holo-item holo-video">
@@ -263,6 +273,54 @@
             audioHint.textContent = 'Click to hear Ari again';
             ariOrb.style.filter = 'brightness(1) saturate(1)';
             isPlaying = false;
+        });
+
+        // Holo Pad voice overview
+        const holoAudio = document.getElementById('holoAudio');
+        const holoBtn = document.getElementById('playHoloBtn');
+        const holoHint = document.getElementById('holoHint');
+        const HOLO_PLAY = '<span class="play-icon">▶</span> Hear About the Holo Pad<span class="trademark">™</span>';
+        let holoPlaying = false;
+
+        function holoReset(label, hint) {
+            holoBtn.innerHTML = label;
+            holoBtn.classList.remove('playing');
+            holoHint.textContent = hint;
+            holoPlaying = false;
+        }
+
+        holoBtn.addEventListener('click', function() {
+            if (!holoPlaying) {
+                // Only one voice at a time: stop the main introduction if it is playing
+                if (isPlaying) {
+                    ariAudio.pause();
+                    playBtn.innerHTML = '<span class="play-icon">▶</span> Let Ari Introduce Us';
+                    playBtn.classList.remove('playing');
+                    audioHint.textContent = 'Click to continue';
+                    ariOrb.style.filter = 'brightness(1) saturate(1)';
+                    isPlaying = false;
+                }
+                holoAudio.play();
+                holoBtn.innerHTML = '<span class="pause-icon">⏸</span> Pause';
+                holoBtn.classList.add('playing');
+                holoHint.textContent = 'Ari is speaking...';
+                holoPlaying = true;
+            } else {
+                holoAudio.pause();
+                holoReset(HOLO_PLAY, 'Click to continue');
+            }
+        });
+
+        holoAudio.addEventListener('ended', function() {
+            holoReset('<span class="play-icon">▶</span> Play Again', 'Click to hear it again');
+        });
+
+        // Starting the main introduction stops the Holo Pad overview
+        playBtn.addEventListener('click', function() {
+            if (holoPlaying) {
+                holoAudio.pause();
+                holoReset(HOLO_PLAY, 'Click to continue');
+            }
         });
 
         // Smooth scrolling for navigation
